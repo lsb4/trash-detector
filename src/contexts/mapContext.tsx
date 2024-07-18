@@ -4,6 +4,9 @@ import axios from "axios";
 interface MapContextProps {
   fetchAddress: (lat: number, lon: number) => Promise<void>;
   selectedMarkerAddress: any;
+  showColectMarkerInfo: boolean;
+  updateShowMarkerInfo: (value: boolean) => void;
+  loadingColectMarkerInfo: boolean;
 }
 
 const MapContext = createContext<MapContextProps | undefined>(undefined);
@@ -22,9 +25,15 @@ interface MapProviderProps {
 
 export const MapProvider: React.FC<MapProviderProps> = ({ children }) => {
   const [selectedMarkerAddress, setSelectedMarkerAddress] = useState<any>();
+  const [showColectMarkerInfo, setShowColectMarkerInfo] =
+    useState<boolean>(false);
+  const [loadingColectMarkerInfo, setLoadingColectMarkerInfo] =
+    useState<boolean>(false);
 
   const fetchAddress = async (lat: number, lon: number) => {
     try {
+      setLoadingColectMarkerInfo(true);
+      updateShowMarkerInfo(true); 
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/reverse`,
         {
@@ -35,16 +44,28 @@ export const MapProvider: React.FC<MapProviderProps> = ({ children }) => {
           },
         }
       );
+      setLoadingColectMarkerInfo(false);
       setSelectedMarkerAddress(response.data.address);
-      console.log(response.data.address);
     } catch (error) {
-      console.error("Erro ao buscar endereço:", error);
+      setLoadingColectMarkerInfo(false);
       setSelectedMarkerAddress(null);
     }
   };
 
+  const updateShowMarkerInfo = (value: boolean) => {
+    setShowColectMarkerInfo(value);
+  };
+
   return (
-    <MapContext.Provider value={{ fetchAddress, selectedMarkerAddress }}>
+    <MapContext.Provider
+      value={{
+        fetchAddress,
+        selectedMarkerAddress,
+        showColectMarkerInfo,
+        updateShowMarkerInfo,
+        loadingColectMarkerInfo,
+      }}
+    >
       {children}
     </MapContext.Provider>
   );

@@ -1,5 +1,4 @@
 import Map from "../components/map";
-
 import {
   Select,
   SelectContent,
@@ -7,35 +6,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/select";
-import { MapProvider } from "../contexts/mapContext";
+import { useMap } from "../contexts/mapContext";
+import ColectMarkerInfo from "../components/colectMarkerInfo";
 
 function Home() {
+  const { showColectMarkerInfo } = useMap();
   return (
-    <MapProvider>
-      <div className="bg-gray-800 flex items-center justify-center w-full h-screen">
-        <div className="bg-white rounded-3xl h-4/5 w-4/5 p-5 flex flex-col items-center justify-start gap-5">
-          <div className="w-full flex justify-between gap-4">
-            <div className="home-card-info">
-              <p>Áreas de alerta</p>
-              <h1>13</h1>
-            </div>
-            <div className="home-card-info">
-              <p>Caminhões Livres para Coleta</p>
-              <h1>1</h1>
-            </div>
-            <div className="home-card-info">
-              <p>Coletas em andamento</p>
-              <h1>3</h1>
-            </div>
-            <div className="home-card-info">
-              <p>Coletas Realizadas</p>
-              <h1>162</h1>
-            </div>
+    <div className="bg-gray-800 flex items-center justify-center w-full h-screen">
+      <div className="bg-white rounded-3xl h-fit w-4/5 p-5 flex flex-col items-center justify-start gap-5">
+        <div className="w-full flex justify-between gap-4">
+          <div className="home-card-info">
+            <p>Áreas de alerta</p>
+            <h1>13</h1>
           </div>
-          <div className="w-full h-[490px] flex gap-7">
-            <div className="w-3/4 h-full">
-              <Map></Map>
-            </div>
+          <div className="home-card-info">
+            <p>Caminhões Livres para Coleta</p>
+            <h1>1</h1>
+          </div>
+          <div className="home-card-info">
+            <p>Coletas em andamento</p>
+            <h1>3</h1>
+          </div>
+          <div className="home-card-info">
+            <p>Coletas Realizadas</p>
+            <h1>162</h1>
+          </div>
+        </div>
+        <div className="w-full h-[380px] flex gap-7">
+          <div className="w-3/4 h-full">
+            <Map></Map>
+          </div>
+          {showColectMarkerInfo ? (
+            <ColectMarkerInfo />
+          ) : (
             <div className="h-full w-1/4">
               <p className="mb-2">Filtrar por:</p>
               <div className="w-full flex flex-col gap-3">
@@ -106,10 +109,10 @@ function Home() {
                 </Select>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
-    </MapProvider>
+    </div>
   );
 }
 
