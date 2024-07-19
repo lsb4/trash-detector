@@ -3,18 +3,21 @@ import Home from "./pages/home";
 
 import "./index.css";
 import { MapProvider } from "./contexts/mapContext";
+import { AuthProvider } from "./contexts/authContext";
 
 function App() {
   return (
     <div className="App">
-      <MapProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="home" element={<Home />} />
-          </Routes>
-        </Router>
-      </MapProvider>
+      <AuthProvider>
+        <MapProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="home" element={<Home />} />
+            </Routes>
+          </Router>
+        </MapProvider>
+      </AuthProvider>
     </div>
   );
 }

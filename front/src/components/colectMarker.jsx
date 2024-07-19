@@ -12,16 +12,25 @@ const customIcon = new L.Icon({
   popupAnchor: [0, -38], // Ajuste a âncora do popup conforme necessário
 });
 
-function ColectMarker({ area }) {
+function ColectMarker({ collectionPoint }) {
   const { fetchAddress } = useMap();
+
+  if (
+    !collectionPoint ||
+    typeof collectionPoint.latitude === "undefined" ||
+    typeof collectionPoint.longitude === "undefined"
+  ) {
+    return null;
+  }
+
   const handleClick = () => {
-    fetchAddress(area[0], area[1]);
+    fetchAddress(collectionPoint);
   };
 
   return (
     <Marker
-      key={area}
-      position={area}
+      key={collectionPoint.latitude + collectionPoint.longitude}
+      position={[collectionPoint.latitude, collectionPoint.longitude]}
       icon={customIcon}
       eventHandlers={{
         click: handleClick,

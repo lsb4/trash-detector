@@ -8,28 +8,49 @@ import {
 } from "../components/select";
 import { useMap } from "../contexts/mapContext";
 import ColectMarkerInfo from "../components/colectMarkerInfo";
+import { useAuth } from "../contexts/authContext";
 
 function Home() {
   const { showColectMarkerInfo } = useMap();
+  const { organization } = useAuth();
+
   return (
     <div className="bg-gray-800 flex items-center justify-center w-full h-screen">
       <div className="bg-white rounded-3xl h-fit w-4/5 p-5 flex flex-col items-center justify-start gap-5">
         <div className="w-full flex justify-between gap-4">
           <div className="home-card-info">
             <p>Áreas de alerta</p>
-            <h1>13</h1>
+            <h1>X</h1>
           </div>
           <div className="home-card-info">
-            <p>Caminhões Livres para Coleta</p>
-            <h1>1</h1>
+            {organization?.trucks ? (
+              <>
+                <p>Caminhões Livres para Coleta</p>
+                <h1>{organization.trucks - organization.busy_trucks}</h1>
+              </>
+            ) : (
+              <div className="loader-white"></div>
+            )}
           </div>
           <div className="home-card-info">
-            <p>Coletas em andamento</p>
-            <h1>3</h1>
+            {organization?.trucks ? (
+              <>
+                <p>Coletas em andamento</p>
+                <h1>{organization.busy_trucks}</h1>
+              </>
+            ) : (
+              <div className="loader-white"></div>
+            )}
           </div>
           <div className="home-card-info">
-            <p>Coletas Realizadas</p>
-            <h1>162</h1>
+            {organization?.trucks ? (
+              <>
+                <p>Coletas Realizadas</p>
+                <h1>{organization.collects}</h1>
+              </>
+            ) : (
+              <div className="loader-white"></div>
+            )}
           </div>
         </div>
         <div className="w-full h-[380px] flex gap-7">

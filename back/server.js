@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const { Sequelize } = require("sequelize");
 const db = require("./models");
 
@@ -10,6 +11,7 @@ const sequelize = new Sequelize("trash_detector", "root", "password", {
 });
 
 app.use(express.json());
+app.use(cors());
 
 // Collection Points
 
